@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tree View Visualizer Design System - Modern Minimalist Pro */
+/* Deep Slate Dark Theme with Glassmorphism */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Core palette - Deep Slate */
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary - Glowing Orange */
+    --primary: 24 95% 53%;
+    --primary-foreground: 222 47% 7%;
+    --primary-glow: 24 100% 60%;
+
+    /* Secondary - Slate variations */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Accent - Light Blue Glow */
+    --accent: 199 89% 48%;
+    --accent-foreground: 222 47% 7%;
+    --accent-glow: 199 100% 60%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 55%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 20%;
+    --input: 217 33% 17%;
+    --ring: 24 95% 53%;
+
+    --radius: 0.75rem;
+
+    /* Glassmorphism tokens */
+    --glass-bg: 222 47% 11% / 0.6;
+    --glass-border: 217 33% 30%;
+    --glass-blur: 16px;
+
+    /* Node specific */
+    --node-bg: 222 47% 12%;
+    --node-border: 217 33% 25%;
+    --node-hover-border: 199 89% 48%;
+    --node-selected-border: 24 95% 53%;
+
+    /* Edge specific */
+    --edge-color: 217 33% 35%;
+    --edge-hover: 199 89% 48%;
+    --edge-selected: 24 95% 53%;
+
+    /* Search */
+    --search-match: 24 95% 53%;
+
+    /* Shadows and glows */
+    --shadow-glow-orange: 0 0 20px hsl(24 95% 53% / 0.4);
+    --shadow-glow-blue: 0 0 20px hsl(199 89% 48% / 0.3);
+    --shadow-glass: 0 8px 32px hsl(222 47% 5% / 0.5);
+
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 222 47% 7%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 20%;
+    --sidebar-ring: 24 95% 53%;
+  }
+
+  .dark {
+    /* Already dark by default */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Glassmorphism card */
+  .glass-card {
+    @apply backdrop-blur-lg border rounded-lg;
+    background: hsl(var(--glass-bg));
+    border-color: hsl(var(--glass-border));
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Tree node styles */
+  .tree-node {
+    @apply glass-card transition-all duration-300 ease-out;
+    border-color: hsl(var(--node-border));
+  }
+
+  .tree-node:hover {
+    border-color: hsl(var(--node-hover-border));
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  .tree-node.selected {
+    border-color: hsl(var(--node-selected-border));
+    box-shadow: var(--shadow-glow-orange);
+  }
+
+  /* Orange toggle button */
+  .toggle-handle {
+    @apply absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full cursor-pointer;
+    @apply flex items-center justify-center transition-all duration-300;
+    background: hsl(var(--primary));
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.6);
+  }
+
+  .toggle-handle:hover {
+    @apply scale-110;
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.8);
+  }
+
+  .toggle-handle.has-children {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 12px hsl(var(--primary) / 0.6);
+    }
+    50% {
+      box-shadow: 0 0 24px hsl(var(--primary) / 0.9);
+    }
+  }
+
+  /* Child count badge */
+  .child-badge {
+    @apply absolute -top-2 -right-2 w-5 h-5 rounded-full text-xs font-semibold;
+    @apply flex items-center justify-center;
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    box-shadow: 0 0 8px hsl(var(--accent) / 0.5);
+  }
+
+  /* Search pulse animation */
+  @keyframes search-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(var(--search-match) / 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 12px hsl(var(--search-match) / 0);
+    }
+  }
+
+  .search-match {
+    animation: search-pulse 1.5s ease-out infinite;
+    border-color: hsl(var(--search-match)) !important;
+  }
+
+  /* Edge glow on hover */
+  .react-flow__edge-path {
+    stroke: hsl(var(--edge-color));
+    transition: stroke 0.2s ease, filter 0.2s ease;
+  }
+
+  .react-flow__edge.selected .react-flow__edge-path,
+  .react-flow__edge:hover .react-flow__edge-path {
+    stroke: hsl(var(--edge-hover));
+    filter: drop-shadow(0 0 6px hsl(var(--accent-glow)));
+  }
+
+  /* Search bar styling */
+  .search-container {
+    @apply glass-card px-4 py-2;
+  }
+}
+
+@layer utilities {
+  .glow-orange {
+    box-shadow: var(--shadow-glow-orange);
+  }
+
+  .glow-blue {
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+}
+
+/* React Flow overrides */
+.react-flow__background {
+  background: hsl(var(--background)) !important;
+}
+
+.react-flow__minimap {
+  background: hsl(var(--card)) !important;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.react-flow__controls {
+  @apply glass-card overflow-hidden;
+}
+
+.react-flow__controls-button {
+  @apply bg-transparent border-none text-foreground;
+}
+
+.react-flow__controls-button:hover {
+  @apply bg-secondary;
+}
+
+.react-flow__attribution {
+  display: none;
+}
